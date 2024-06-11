@@ -20,7 +20,7 @@ public class EmpleadoDto extends BaseDto {
     private String telefono;
     private String email;
     private LocalDate fechaNacimiento;
-    private Rol tipoEmpleado;
+    private Rol rol;
     private SucursalShortShort sucursal;
 
 }

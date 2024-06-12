@@ -50,7 +50,7 @@ public class SecurityConfiguration {
                 })
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/h2-console/**").permitAll()
+                                //.requestMatchers("/h2-console/**").permitAll()
                                 .anyRequest().permitAll()
                 )
                 .oauth2ResourceServer(oauth2ResourceServer ->

@@ -12,6 +12,7 @@ import com.entidades.buenSabor.domain.dto.Sucursal.SucursalEditDto;
 import com.entidades.buenSabor.domain.entities.Sucursal;
 import com.entidades.buenSabor.presentation.rest.Base.BaseControllerImp;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,13 @@ import java.util.List;
 public class SucursalController extends BaseControllerImp<Sucursal, SucursalDto, SucursalCreateDto, SucursalEditDto,Long, SucursalFacadeImp> {
     public SucursalController(SucursalFacadeImp facade) {
         super(facade);
+    }
+
+    @Override
+    @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<SucursalDto> create(SucursalCreateDto entity){
+        return super.create(entity);
     }
 
     @GetMapping("/getCategorias/{idSucursal}")

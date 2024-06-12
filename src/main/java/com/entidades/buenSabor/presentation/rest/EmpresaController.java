@@ -23,12 +23,27 @@ public class EmpresaController extends BaseControllerImp<Empresa, EmpresaDto, Em
         super(facade);
     }
 
+    @Override
+    @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<EmpresaDto> create(@RequestBody EmpresaCreateDto entity) {
+        return super.create(entity);
+    }
+
+    @Override
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<EmpresaDto> edit (EmpresaEditDto entity, Long id){
+        return super.edit(entity,id);
+    }
+
     @GetMapping("/sucursales/{idEmpresa}")
     public ResponseEntity<EmpresaLargeDto> getEmpresaSucursales(@PathVariable Long idEmpresa){
         return ResponseEntity.ok(facade.getEmpresaSucursales(idEmpresa));
     }
 
     // Método POST para subir imágenes
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/uploads")
     public ResponseEntity<String> uploadImages(
             @RequestParam(value = "uploads", required = true) MultipartFile[] files,

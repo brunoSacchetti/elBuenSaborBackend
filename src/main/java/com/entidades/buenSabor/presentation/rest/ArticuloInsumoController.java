@@ -10,6 +10,7 @@ import com.entidades.buenSabor.presentation.rest.Base.BaseControllerImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,10 +29,25 @@ public class ArticuloInsumoController  extends BaseControllerImp<ArticuloInsumo,
     @Autowired
     ArticuloInsumoService articuloInsumoService;
 
+    @PostMapping
+    @Override
+    @PreAuthorize("hasAnyAuthority('EMPLEADO','ADMIN')")
+    public ResponseEntity<ArticuloInsumoDto> create (ArticuloInsumoCreateDto entity){
+        return super.create(entity);
+    }
+
+    @PutMapping("/{id}")
+    @Override
+    @PreAuthorize("hasAnyAuthority('EMPLEADO','ADMIN')")
+    public ResponseEntity<ArticuloInsumoDto> edit(ArticuloInsumoEditDto editDto, Long id){
+        return super.edit(editDto, id);
+    }
+
+    @PreAuthorize("hasAnyAuthority('EMPLEADO','ADMIN')")
     @PutMapping("/changeHabilitado/{id}")
     public ResponseEntity<?> changeHabilitado(@PathVariable Long id){
         facade.changeHabilitado(id);
-        return ResponseEntity.ok().body("Se cambio el estado del Insuomo");
+        return ResponseEntity.ok().body("cambio de estado: Insumo");
     }
 
     @GetMapping("/getHabilitados")
@@ -53,12 +69,14 @@ public class ArticuloInsumoController  extends BaseControllerImp<ArticuloInsumo,
         }
     } */
 
+    @PreAuthorize("hasAnyAuthority('EMPLEADO','ADMIN')")
     @PostMapping("/uploads")
     public ResponseEntity<String> uploadImages(@RequestParam("uploads") MultipartFile[] files,
                                                @RequestParam("id") Long idArticulo) {
         return articuloInsumoService.uploadImages(files, idArticulo);
     }
 
+    //@PreAuthorize("hasAnyAuthority('EMPLEADO','ADMIN')")
     @DeleteMapping("/{publicId}/imagenes/{id}")
     public ResponseEntity<String> deleteImage(@PathVariable String publicId, @PathVariable Long id) {
         return articuloInsumoService.deleteImage(publicId, id);

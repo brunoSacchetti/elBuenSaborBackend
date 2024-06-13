@@ -23,13 +23,13 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
 
 
     @Autowired
-    private PedidoRepository pedidoRepository;
+    PedidoRepository pedidoRepository;
     @Autowired
-    private PedidoMapper pedidoMapper;
+    PedidoMapper pedidoMapper;
     @Autowired
-    private ArticuloInsumoService articuloInsumoService;
+    ArticuloInsumoService articuloInsumoService;
     @Autowired
-    private ArticuloService articuloService;
+    ArticuloService articuloService;
     @Autowired
     EmpleadoService empleadoService;
 
@@ -97,7 +97,7 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
 
     @Override
     public List<Pedido> obtenerPedidosEnCocina() {
-        // Implementar la lógica para obtener los pedidos que están en preparación
+
         return pedidoRepository.findByEstado(Estado.PREPARACION);
     }
 

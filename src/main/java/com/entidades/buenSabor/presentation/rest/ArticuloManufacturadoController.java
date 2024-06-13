@@ -10,6 +10,7 @@ import com.entidades.buenSabor.presentation.rest.Base.BaseControllerImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,6 +20,21 @@ import org.springframework.web.multipart.MultipartFile;
 public class ArticuloManufacturadoController extends BaseControllerImp<ArticuloManufacturado, ArticuloManufacturadoDto, ArticuloManufacturadoCreateDto, ArticuloManufacturadoEditDto, Long, ArticuloManufacturadoFacadeImp> {
     public ArticuloManufacturadoController(ArticuloManufacturadoFacadeImp facade) {
         super(facade);
+    }
+
+
+    @Override
+    @PostMapping
+    @PreAuthorize("hasAnyAuthority('COCINERO','ADMIN')")
+    public ResponseEntity<ArticuloManufacturadoDto> create(ArticuloManufacturadoCreateDto entity){
+        return super.create(entity);
+    }
+
+    @Override
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('COCINERO','ADMIN')")
+    public ResponseEntity<ArticuloManufacturadoDto> edit(ArticuloManufacturadoEditDto entity, Long id){
+        return super.edit(entity, id);
     }
 
     @Autowired

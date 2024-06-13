@@ -13,10 +13,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class FacturaCreateDto {
     private LocalDate fechaFcturacion;
-    private Integer mpPaymentId;
-    private Integer mpMerchantOrderId;
-    private String mpPreferenceId;
-    private String mpPaymentType;
+    //private Integer mpPaymentId;
+    //private Integer mpMerchantOrderId;
+    //private String mpPreferenceId;
+    //private String mpPaymentType;
     private FormaPago formaPago;
     private Double totalVenta;
 }

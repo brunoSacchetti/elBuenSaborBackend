@@ -51,12 +51,10 @@ public interface DetallePedidoMapper extends BaseMapper<DetallePedido, DetallePe
     @Mapping(target = "articulo", source = "idArticulo", qualifiedByName = "getById")
     public DetallePedido toEntityCreate(DetallePedidoPostDto source);
 
-    // Este método consulta si el articulo es insumo
     default ArticuloInsumoDto filterArticuloInsumo(DetallePedido source) {
         return (source.getArticulo() instanceof ArticuloInsumo) ? ArticuloInsumoMapper.INSTANCE.toDTO((ArticuloInsumo) source.getArticulo()) : null;
     }
 
-    // Este método consulta si el articulo es insumo
     default ArticuloManufacturadoDto filterArticuloManufacturado(DetallePedido source) {
         return (source.getArticulo() instanceof ArticuloManufacturado) ? ArticuloManufacturadoMapper.INSTANCE.toDTO((ArticuloManufacturado) source.getArticulo()) : null;
     }

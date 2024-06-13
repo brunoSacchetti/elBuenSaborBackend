@@ -3,6 +3,7 @@ package com.entidades.buenSabor.business.service.Imp;
 import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
 import com.entidades.buenSabor.business.service.ClienteService;
 import com.entidades.buenSabor.domain.entities.Cliente;
+import com.entidades.buenSabor.domain.entities.Domicilio;
 import com.entidades.buenSabor.repositories.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,5 +17,14 @@ public class ClienteServiceImpl extends BaseServiceImp<Cliente,Long> implements 
     @Override
     public Cliente findByEmail(String email) {
         return clienteRepository.findByEmail(email);
+    }
+
+    @Override
+    public Cliente añadirDomicilioCliente(Domicilio domicilio, Long id){
+        Cliente cliente = getById(id);
+        cliente.getDomicilios().add(domicilio);
+
+
+        return clienteRepository.save(cliente);
     }
 }

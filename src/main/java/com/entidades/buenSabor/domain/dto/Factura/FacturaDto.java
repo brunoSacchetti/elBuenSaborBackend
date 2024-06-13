@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class FacturaDto extends BaseDto {
     @Schema(type = "string", format = "time", pattern = "HH:mm:ss", description = "Horario de apertura en formato HH:mm:ss")
-    private LocalDate fechaFcturacion;
+    private LocalDate fechaFacturacion;
     private Integer mpPaymentId;
     private Integer mpMerchantOrderId;
     private String mpPreferenceId;

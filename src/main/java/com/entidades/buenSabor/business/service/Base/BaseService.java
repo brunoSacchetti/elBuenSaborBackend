@@ -1,6 +1,6 @@
 package com.entidades.buenSabor.business.service.Base;
 
-import com.entidades.buenSabor.MyException.RestrictDeleteException;
+import com.entidades.buenSabor.exceptions.RestrictDeleteException;
 import com.entidades.buenSabor.domain.entities.Base;
 import org.mapstruct.Named;
 

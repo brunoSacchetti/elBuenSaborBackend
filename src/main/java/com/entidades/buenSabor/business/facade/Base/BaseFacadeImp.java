@@ -1,7 +1,7 @@
 package com.entidades.buenSabor.business.facade.Base;
 
 
-import com.entidades.buenSabor.MyException.RestrictDeleteException;
+import com.entidades.buenSabor.exceptions.RestrictDeleteException;
 import com.entidades.buenSabor.business.mapper.BaseMapper;
 import com.entidades.buenSabor.business.service.Base.BaseService;
 import com.entidades.buenSabor.domain.dto.BaseDto;

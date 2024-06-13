@@ -1,6 +1,6 @@
 package com.entidades.buenSabor.business.service.Imp;
 
-import com.entidades.buenSabor.MyException.RestrictDeleteException;
+import com.entidades.buenSabor.exceptions.RestrictDeleteException;
 import com.entidades.buenSabor.business.service.ArticuloManufacturadoService;
 import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
 import com.entidades.buenSabor.business.service.CloudinaryService;
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;

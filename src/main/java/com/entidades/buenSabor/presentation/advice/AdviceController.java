@@ -1,6 +1,6 @@
 package com.entidades.buenSabor.presentation.advice;
 
-import com.entidades.buenSabor.MyException.RestrictDeleteException;
+import com.entidades.buenSabor.exceptions.RestrictDeleteException;
 import com.entidades.buenSabor.domain.dto.ErrorDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

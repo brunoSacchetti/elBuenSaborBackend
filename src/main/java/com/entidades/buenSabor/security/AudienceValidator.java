@@ -1,4 +1,4 @@
-package com.entidades.buenSabor.SeguridadAuth;
+package com.entidades.buenSabor.security;
 
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;

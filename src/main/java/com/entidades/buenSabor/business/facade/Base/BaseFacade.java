@@ -1,6 +1,6 @@
 package com.entidades.buenSabor.business.facade.Base;
 
-import com.entidades.buenSabor.MyException.RestrictDeleteException;
+import com.entidades.buenSabor.exceptions.RestrictDeleteException;
 import com.entidades.buenSabor.domain.dto.BaseDto;
 
 import java.io.Serializable;

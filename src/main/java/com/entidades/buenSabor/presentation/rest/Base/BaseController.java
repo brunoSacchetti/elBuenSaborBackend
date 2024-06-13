@@ -1,6 +1,6 @@
 package com.entidades.buenSabor.presentation.rest.Base;
 
-import com.entidades.buenSabor.MyException.RestrictDeleteException;
+import com.entidades.buenSabor.exceptions.RestrictDeleteException;
 import com.entidades.buenSabor.domain.dto.BaseDto;
 import org.springframework.http.ResponseEntity;
 

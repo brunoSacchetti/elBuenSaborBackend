@@ -1,4 +1,4 @@
-package com.entidades.buenSabor.SeguridadAuth;
+package com.entidades.buenSabor.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

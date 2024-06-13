@@ -1,6 +1,6 @@
 package com.entidades.buenSabor.business.service.Imp;
 
-import com.entidades.buenSabor.MyException.RestrictDeleteException;
+import com.entidades.buenSabor.exceptions.RestrictDeleteException;
 import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
 import com.entidades.buenSabor.business.service.UnidadMedidaService;
 import com.entidades.buenSabor.domain.entities.Articulo;

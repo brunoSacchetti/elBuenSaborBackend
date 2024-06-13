@@ -1,6 +1,6 @@
 package com.entidades.buenSabor.audit;
 
-import com.entidades.buenSabor.Config.CustomRevisionListener;
+import com.entidades.buenSabor.config.CustomRevisionListener;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

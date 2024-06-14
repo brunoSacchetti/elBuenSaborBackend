@@ -41,8 +41,43 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
         return super.create(pedido);
     }
 
-    @Override
+    /* @Override
     public void validarStock(Set<DetallePedido> detalles) {
+        for (DetallePedido detalle : detalles) {
+            Articulo articulo = detalle.getArticulo();
+            if (articulo instanceof ArticuloInsumo) {
+                ArticuloInsumo insumo = (ArticuloInsumo) articulo;
+                if (!insumo.tieneStockSuficiente(detalle.getCantidad())) {
+                    throw new RuntimeException("No hay stock del articulo");
+                }
+                // Decrementar el stock
+                insumo.setStockActual(insumo.getStockActual() - detalle.getCantidad());
+                articuloService.update(insumo, insumo.getId());
+
+                //REVISAR DETALLES DE ARTICULO MANUFACTURADO
+
+            } else if (articulo instanceof ArticuloManufacturado) {
+                ArticuloManufacturado manufacturado = (ArticuloManufacturado) articulo;
+                for (ArticuloManufacturadoDetalle manufacturadoDetalle : manufacturado.getArticuloManufacturadoDetalles()) {
+                    ArticuloInsumo insumo = manufacturadoDetalle.getArticuloInsumo();
+                    int cantidadNecesaria = manufacturadoDetalle.getCantidad() * detalle.getCantidad();
+                    if (insumo.getStockActual() < cantidadNecesaria) {
+                        throw new RuntimeException("No hay stock del articulo");
+                    }
+                }
+                // Decrementar el stock de los insumos del artículo manufacturado
+                for (ArticuloManufacturadoDetalle manufacturadoDetalle : manufacturado.getArticuloManufacturadoDetalles()) {
+                    ArticuloInsumo insumo = manufacturadoDetalle.getArticuloInsumo();
+                    int cantidadNecesaria = manufacturadoDetalle.getCantidad() * detalle.getCantidad();
+                    insumo.setStockActual(insumo.getStockActual() - cantidadNecesaria);
+                    articuloService.update(insumo, insumo.getId());
+                }
+            }
+        }
+    } */
+
+    @Override
+    public void validarStock(Set<DetallePedido> detalles) throws RuntimeException {
         for (DetallePedido detalle : detalles) {
             Articulo articulo = detalle.getArticulo();
             if (articulo instanceof ArticuloInsumo) {
@@ -53,9 +88,26 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
                 // Decrementar el stock
                 insumo.setStockActual(insumo.getStockActual() - detalle.getCantidad());
                 articuloService.update(insumo, insumo.getId());
+            } else if (articulo instanceof ArticuloManufacturado) {
+                ArticuloManufacturado manufacturado = (ArticuloManufacturado) articulo;
+                for (ArticuloManufacturadoDetalle manufacturadoDetalle : manufacturado.getArticuloManufacturadoDetalles()) {
+                    int cantidadNecesaria = manufacturadoDetalle.getCantidad() * detalle.getCantidad();
+                    ArticuloInsumo insumo = manufacturadoDetalle.getArticuloInsumo();
+                    if (!insumo.tieneStockSuficiente(cantidadNecesaria)) {
+                        throw new RuntimeException("Stock insuficiente para el insumo: " + insumo.getDenominacion());
+                    }
+                }
+                // Decrementar el stock de los insumos del artículo manufacturado
+                for (ArticuloManufacturadoDetalle manufacturadoDetalle : manufacturado.getArticuloManufacturadoDetalles()) {
+                    int cantidadNecesaria = manufacturadoDetalle.getCantidad() * detalle.getCantidad();
+                    ArticuloInsumo insumo = manufacturadoDetalle.getArticuloInsumo();
+                    insumo.setStockActual(insumo.getStockActual() - cantidadNecesaria);
+                    articuloService.update(insumo, insumo.getId());
+                }
             }
         }
     }
+
 
     @Override
     public void aplicarDescuento(Pedido pedido) {

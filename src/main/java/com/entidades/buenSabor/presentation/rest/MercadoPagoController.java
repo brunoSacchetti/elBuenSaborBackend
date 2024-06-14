@@ -41,12 +41,10 @@ public class MercadoPagoController {
 
 
         try {
-            MercadoPagoConfig.setAccessToken("TEST-741015966603778-060614-c9bf254c22cb8cfbf84bf96326e74f84-1187616281");
+            MercadoPagoConfig.setAccessToken("");
 
-            //Creamos la preferencia
-            //PREFERENCIA DE VENTA
             PreferenceItemRequest itemRequest = PreferenceItemRequest.builder()
-                    .id(pedido.getId().toString())//id hardcodeado
+                    .id(pedido.getId().toString())
                     .title("compra producto")
                     .description("Pedido realizado desde el carrito de compras")
                     .pictureUrl("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwIO85PD8j6F_gTdPtZC20xoE6MOVD0dcR_Q&s")
@@ -57,23 +55,21 @@ public class MercadoPagoController {
             List<PreferenceItemRequest> items = new ArrayList<>();
             items.add(itemRequest);
 
-            //preferencia de control de sucesos en el caso que toque lo redirecciona a otra pagna
-            //aca no pueden ir url localesm, pero hacemos una excepcion
             PreferenceBackUrlsRequest backUrls = PreferenceBackUrlsRequest.builder()
                     .success("http://localhost:5173")
                     .pending("http://localhost:5173")
                     .failure("http://localhost:5173")
                     .build();
 
-            //preferencia que tendra todas las preferencias que se hayan creado
+
             PreferenceRequest preferenceRequest = PreferenceRequest.builder()
                     .items(items)
                     .backUrls(backUrls)
                     .build();
 
-            // creo un cliente para comunicarme con mp
+
             PreferenceClient client = new PreferenceClient();
-            //se crea una nueeva prefertencia que es igual a lla respuesta
+
             Preference preference = client.create(preferenceRequest);
 
 

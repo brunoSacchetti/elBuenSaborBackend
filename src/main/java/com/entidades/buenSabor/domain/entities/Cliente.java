@@ -28,8 +28,13 @@ public class Cliente extends Base{
     @Column(name = "email", unique = true)
     protected String email;
 
-    @OneToOne
-    protected Usuario usuario;
+    //@OneToOne
+    //protected Usuario usuario;
+
+    /* @OneToOne(cascade = CascadeType.ALL)
+    protected UsuarioEcommerce usuario; */
+    private String userName;
+    private String password;
 
     //no se necesita rol para cliente
     //private Rol rol = Rol.CLIENTE;

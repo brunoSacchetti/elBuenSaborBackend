@@ -1,6 +1,7 @@
 package com.entidades.buenSabor.domain.dto.Cliente;
 
 import com.entidades.buenSabor.domain.dto.Domicilio.DomicilioCreateDto;
+import com.entidades.buenSabor.domain.entities.UsuarioEcommerce;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,5 +27,8 @@ public class ClienteCreateDto {
     private Set<DomicilioCreateDto> domicilios;
 
     private String imagenUrl;
+
+    private String userName;
+    private String password;
 
 }

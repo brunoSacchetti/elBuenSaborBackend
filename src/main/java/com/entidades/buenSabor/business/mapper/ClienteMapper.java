@@ -15,8 +15,10 @@ public interface ClienteMapper extends BaseMapper<Cliente, ClienteDto, ClienteCr
     @Mappings({
 //            //@Mapping(source = "idPedido", target = "pedidos",qualifiedByName = "getById"),
             @Mapping(source = "domicilios", target = "domicilios",qualifiedByName = "toEntityCreateSetDomicilio"),
-            @Mapping(source = "imagenUrl", target = "imagenCliente.url"), // creamos un objeto Imagen cliente con la url recibida
-            @Mapping(source = "email",target = "imagenCliente.name") // le asignamos como nombre el email del usuario
+            @Mapping(source = "imagenUrl", target = "imagenCliente.url"),
+            @Mapping(source = "email",target = "imagenCliente.name"),
+            //@Mapping(source = "usuario", target = "usuario")
+
     })
     Cliente toEntityCreate(ClienteCreateDto source);
 

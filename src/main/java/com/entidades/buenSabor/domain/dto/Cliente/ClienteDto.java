@@ -3,6 +3,7 @@ package com.entidades.buenSabor.domain.dto.Cliente;
 import com.entidades.buenSabor.domain.dto.BaseDto;
 import com.entidades.buenSabor.domain.dto.Domicilio.DomicilioDto;
 import com.entidades.buenSabor.domain.dto.Imagen.ImagenDto;
+import com.entidades.buenSabor.domain.entities.UsuarioEcommerce;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,4 +29,9 @@ public class ClienteDto extends BaseDto {
     private Set<DomicilioDto> domicilios;
 
     private ImagenDto imagenCliente;
+
+    private String userName;
+    private String password;
+
+    //private UsuarioEcommerce usuario;
 }

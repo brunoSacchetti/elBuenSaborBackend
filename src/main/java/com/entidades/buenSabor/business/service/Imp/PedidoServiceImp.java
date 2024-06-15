@@ -1,11 +1,8 @@
 package com.entidades.buenSabor.business.service.Imp;
 
 import com.entidades.buenSabor.business.mapper.PedidoMapper;
-import com.entidades.buenSabor.business.service.ArticuloInsumoService;
-import com.entidades.buenSabor.business.service.ArticuloService;
+import com.entidades.buenSabor.business.service.*;
 import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
-import com.entidades.buenSabor.business.service.EmpleadoService;
-import com.entidades.buenSabor.business.service.PedidoService;
 import com.entidades.buenSabor.domain.entities.*;
 import com.entidades.buenSabor.domain.enums.Estado;
 import com.entidades.buenSabor.domain.enums.Rol;
@@ -14,6 +11,7 @@ import com.entidades.buenSabor.repositories.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
@@ -33,48 +31,20 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
     @Autowired
     EmpleadoService empleadoService;
 
+    @Autowired
+    ArticuloManufacturadoService articuloManufacturadoService;
+
     @Override
-    public Pedido create(Pedido pedido) {
+    public Pedido create(Pedido pedido) throws RuntimeException{
+        pedido.setFechaPedido(LocalDate.now());
+        pedido.setEstado(Estado.PENDIENTE);
+        calcularTotal(pedido);
         validarStock(pedido.getDetallePedidos());
         aplicarDescuento(pedido);
         calcularTiempoEstimado(pedido);
+        calcularTotalCosto(pedido);
         return super.create(pedido);
     }
-
-    /* @Override
-    public void validarStock(Set<DetallePedido> detalles) {
-        for (DetallePedido detalle : detalles) {
-            Articulo articulo = detalle.getArticulo();
-            if (articulo instanceof ArticuloInsumo) {
-                ArticuloInsumo insumo = (ArticuloInsumo) articulo;
-                if (!insumo.tieneStockSuficiente(detalle.getCantidad())) {
-                    throw new RuntimeException("No hay stock del articulo");
-                }
-                // Decrementar el stock
-                insumo.setStockActual(insumo.getStockActual() - detalle.getCantidad());
-                articuloService.update(insumo, insumo.getId());
-
-                //REVISAR DETALLES DE ARTICULO MANUFACTURADO
-
-            } else if (articulo instanceof ArticuloManufacturado) {
-                ArticuloManufacturado manufacturado = (ArticuloManufacturado) articulo;
-                for (ArticuloManufacturadoDetalle manufacturadoDetalle : manufacturado.getArticuloManufacturadoDetalles()) {
-                    ArticuloInsumo insumo = manufacturadoDetalle.getArticuloInsumo();
-                    int cantidadNecesaria = manufacturadoDetalle.getCantidad() * detalle.getCantidad();
-                    if (insumo.getStockActual() < cantidadNecesaria) {
-                        throw new RuntimeException("No hay stock del articulo");
-                    }
-                }
-                // Decrementar el stock de los insumos del artículo manufacturado
-                for (ArticuloManufacturadoDetalle manufacturadoDetalle : manufacturado.getArticuloManufacturadoDetalles()) {
-                    ArticuloInsumo insumo = manufacturadoDetalle.getArticuloInsumo();
-                    int cantidadNecesaria = manufacturadoDetalle.getCantidad() * detalle.getCantidad();
-                    insumo.setStockActual(insumo.getStockActual() - cantidadNecesaria);
-                    articuloService.update(insumo, insumo.getId());
-                }
-            }
-        }
-    } */
 
     @Override
     public void validarStock(Set<DetallePedido> detalles) throws RuntimeException {
@@ -88,21 +58,15 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
                 // Decrementar el stock
                 insumo.setStockActual(insumo.getStockActual() - detalle.getCantidad());
                 articuloService.update(insumo, insumo.getId());
-            } else if (articulo instanceof ArticuloManufacturado) {
-                ArticuloManufacturado manufacturado = (ArticuloManufacturado) articulo;
-                for (ArticuloManufacturadoDetalle manufacturadoDetalle : manufacturado.getArticuloManufacturadoDetalles()) {
-                    int cantidadNecesaria = manufacturadoDetalle.getCantidad() * detalle.getCantidad();
-                    ArticuloInsumo insumo = manufacturadoDetalle.getArticuloInsumo();
-                    if (!insumo.tieneStockSuficiente(cantidadNecesaria)) {
-                        throw new RuntimeException("Stock insuficiente para el insumo: " + insumo.getDenominacion());
+            } else {
+                ArticuloManufacturado articuloManufacturado = articuloManufacturadoService.getById(articulo.getId());
+                for (ArticuloManufacturadoDetalle amd : articuloManufacturado.getArticuloManufacturadoDetalles()) {
+                    if (!amd.getArticuloInsumo().tieneStockSuficiente(detalle.getCantidad())) {
+                        throw new RuntimeException("Stock insuficiente para el artículo: " + amd.getArticuloInsumo().getDenominacion());
                     }
-                }
-                // Decrementar el stock de los insumos del artículo manufacturado
-                for (ArticuloManufacturadoDetalle manufacturadoDetalle : manufacturado.getArticuloManufacturadoDetalles()) {
-                    int cantidadNecesaria = manufacturadoDetalle.getCantidad() * detalle.getCantidad();
-                    ArticuloInsumo insumo = manufacturadoDetalle.getArticuloInsumo();
-                    insumo.setStockActual(insumo.getStockActual() - cantidadNecesaria);
-                    articuloService.update(insumo, insumo.getId());
+                    // Decrementar el stock
+                    amd.getArticuloInsumo().setStockActual(amd.getArticuloInsumo().getStockActual() - detalle.getCantidad());
+                    articuloService.update(amd.getArticuloInsumo(), amd.getArticuloInsumo().getId());
                 }
             }
         }
@@ -163,6 +127,32 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
         Pedido pedido = getById(id);
         pedido.setEstado(estado);
         return create(pedido);
+    }
+
+    private void calcularTotal(Pedido pedido) {
+        double total = 0.0;
+        for (DetallePedido detalle : pedido.getDetallePedidos()) {
+            total += detalle.getCantidad() * detalle.getArticulo().getPrecioVenta();
+        }
+        pedido.setTotal(total);
+    }
+    private void calcularTotalCosto(Pedido pedido) {
+        double totalCosto = 0.0;
+        for (DetallePedido detalle : pedido.getDetallePedidos()) {
+            Articulo articulo = detalle.getArticulo();
+            if (articulo instanceof ArticuloInsumo) {
+                ArticuloInsumo insumo = (ArticuloInsumo) articulo;
+                totalCosto += detalle.getCantidad() * insumo.getPrecioCompra();
+            } else if (articulo instanceof ArticuloManufacturado) {
+                ArticuloManufacturado manufacturado = (ArticuloManufacturado) articulo;
+                for (ArticuloManufacturadoDetalle detalleManufacturado : manufacturado.getArticuloManufacturadoDetalles()) {
+                    ArticuloInsumo insumo = detalleManufacturado.getArticuloInsumo();
+                    totalCosto += detalleManufacturado.getCantidad() * insumo.getPrecioCompra();
+                }
+            }
+        }
+        pedido.setTotalCosto(totalCosto);
+
     }
 }
 

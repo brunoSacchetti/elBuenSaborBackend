@@ -21,15 +21,15 @@ import java.util.Set;
 @AllArgsConstructor
 public class PedidoCreateDto {
 
-    @Schema(type = "string", format = "time", pattern = "HH:mm:ss", description = "Horario de apertura en formato HH:mm:ss")
-    private LocalTime horaEstimadaFinalizacion;
-    private Double total;
+    //@Schema(type = "string", format = "time", pattern = "HH:mm:ss", description = "Horario de apertura en formato HH:mm:ss")
+    //private LocalTime horaEstimadaFinalizacion;
+    //private Double total;
     //private Double totalCosto;
-    private Estado estado;
+    //private Estado estado;
     private TipoEnvio tipoEnvio;
     private FormaPago formaPago;
     private Long domicilioID;
-    private LocalDate fechaPedido;
+    //private LocalDate fechaPedido;
     Set<DetallePedidoPostDto> detallePedidos;
 
     private Long clienteID;

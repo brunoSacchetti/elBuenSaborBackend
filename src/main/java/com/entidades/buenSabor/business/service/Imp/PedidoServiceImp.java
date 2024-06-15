@@ -7,10 +7,12 @@ import com.entidades.buenSabor.domain.entities.*;
 import com.entidades.buenSabor.domain.enums.Estado;
 import com.entidades.buenSabor.domain.enums.Rol;
 import com.entidades.buenSabor.domain.enums.TipoEnvio;
+import com.entidades.buenSabor.repositories.FacturaRepository;
 import com.entidades.buenSabor.repositories.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -33,6 +35,15 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
 
     @Autowired
     ArticuloManufacturadoService articuloManufacturadoService;
+
+    @Autowired
+    FacturaService facturaService;
+
+    @Autowired
+    FacturaRepository facturaRepository;
+
+    @Autowired
+    SendEmailService sendEmailService;
 
     @Override
     public Pedido create(Pedido pedido) throws RuntimeException{
@@ -74,11 +85,14 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
 
 
     @Override
-    public void aplicarDescuento(Pedido pedido) {
+    public boolean aplicarDescuento(Pedido pedido) {
         if (pedido.getTipoEnvio() == TipoEnvio.TAKE_AWAY) {
             pedido.setTotal(pedido.getTotal() * 0.9); // Aplicar 10% de descuento
+            return true;
         }
+        return false;
     }
+
 
     @Override
     public void calcularTiempoEstimado(Pedido pedido) {
@@ -122,11 +136,51 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
         return empleadoService.contarPorRol(Rol.COCINERO);
     }
 
-    @Override
+    /* @Override
     public Pedido cambiaEstado(Estado estado, Long id) {
         Pedido pedido = getById(id);
         pedido.setEstado(estado);
         return create(pedido);
+    } */
+
+    @Override
+    public Pedido cambiaEstado(Estado estado, Long id) {
+        Pedido pedido = getById(id);
+        pedido.setEstado(estado);
+
+        if (estado == Estado.PREPARACION) {
+            Factura factura = new Factura();
+            factura.setFechaFacturacion(LocalDate.now());
+            if (aplicarDescuento(pedido)){
+                factura.setMontoDescuento(10);
+            }else {
+                factura.setMontoDescuento(0);
+            }
+            factura.setFormaPago(pedido.getFormaPago());
+            factura.setTotalVenta(pedido.getTotal());
+            pedido.setFactura(factura);
+
+            facturaRepository.save(factura);
+        }
+
+
+        if (estado == Estado.ENTREGADO) {
+            try {
+                // creamos la factura  la factura PDF
+                byte[] facturaPdf = facturaService.generarFacturaPDF(pedido);
+
+                // traemos el email del cliente
+                String emailCliente = pedido.getCliente().getEmail();
+
+                // Enviar el email con la factura
+                sendEmailService.sendMail(facturaPdf, emailCliente, null, "Factura de Pedido " + pedido.getId(), "Adjunto encontrará la factura de su pedido.", "factura_" + pedido.getId() + ".pdf");
+
+            } catch (java.io.IOException e) {
+                throw new RuntimeException("Error al generar o enviar la factura: " + e.getMessage(), e);
+            }
+        }
+
+        return pedidoRepository.save(pedido);
     }
 
     private void calcularTotal(Pedido pedido) {

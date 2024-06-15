@@ -18,9 +18,9 @@ public class PedidoController extends BaseControllerImp<Pedido, PedidoDto, Pedid
         super(facade);
     }
 
-    /* @PutMapping("/CambiarEstadoPedido/{id}")
+    @PutMapping("/CambiarEstadoPedido/{id}")
     public ResponseEntity<PedidoDto> cambiaEstado(@RequestBody Estado estado, @PathVariable Long id ) {
         return ResponseEntity.ok(facade.cambiaEstado(estado, id));
-    } */
+    }
 
 }

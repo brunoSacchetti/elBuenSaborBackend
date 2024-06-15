@@ -7,4 +7,6 @@ import com.entidades.buenSabor.domain.dto.Domicilio.DomicilioCreateDto;
 
 public interface ClienteFacade extends BaseFacade<ClienteDto, ClienteCreateDto,ClienteCreateDto,Long> {
     ClienteDto añadirDomicilioCliente(DomicilioCreateDto domicilio, Long id);
+
+    public Object getAllPedidos(Long id);
 }

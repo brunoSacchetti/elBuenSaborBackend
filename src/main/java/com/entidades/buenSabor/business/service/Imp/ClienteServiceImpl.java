@@ -5,17 +5,22 @@ import com.entidades.buenSabor.business.service.Base.BaseServiceImp;
 import com.entidades.buenSabor.business.service.ClienteService;
 import com.entidades.buenSabor.domain.dto.Cliente.ClienteCreateDto;
 import com.entidades.buenSabor.domain.dto.Cliente.ClienteDto;
+import com.entidades.buenSabor.domain.dto.Cliente.ClienteLoginDto;
+import com.entidades.buenSabor.domain.dto.Domicilio.DomicilioDto;
+import com.entidades.buenSabor.domain.dto.Localidad.LocalidadDto;
 import com.entidades.buenSabor.domain.dto.LoginDto.LoginDto;
-import com.entidades.buenSabor.domain.entities.Cliente;
-import com.entidades.buenSabor.domain.entities.Domicilio;
-import com.entidades.buenSabor.domain.entities.Usuario;
-import com.entidades.buenSabor.domain.entities.UsuarioEcommerce;
+import com.entidades.buenSabor.domain.entities.*;
 import com.entidades.buenSabor.repositories.ClienteRepository;
+import com.entidades.buenSabor.repositories.PedidoRepository;
 import com.entidades.buenSabor.repositories.UsuarioEcommerceRepository;
 import com.entidades.buenSabor.utils.PasswordEncrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ClienteServiceImpl extends BaseServiceImp<Cliente,Long> implements ClienteService {
@@ -28,6 +33,9 @@ public class ClienteServiceImpl extends BaseServiceImp<Cliente,Long> implements 
 
     @Autowired
     UsuarioEcommerceRepository usuarioEcommerceRepository;
+
+    @Autowired
+    PedidoRepository pedidoRepository;
 
     @Override
     public Cliente findByEmail(String email) {
@@ -54,17 +62,23 @@ public class ClienteServiceImpl extends BaseServiceImp<Cliente,Long> implements 
         return clienteRepository.save(cliente);
     }
 
-    public Cliente login(LoginDto loginDto) {
+    public ClienteDto login(LoginDto loginDto) {
         // Buscar el cliente por userName
         Cliente cliente = clienteRepository.findByUserName(loginDto.getUserName());
         if (cliente != null) {
             // Validar la contraseña
             String encryptedPassword = PasswordEncrypt.sha256(loginDto.getPassword());
             if (cliente.getPassword().equals(encryptedPassword)) {
-                return cliente; // Login exitoso, retorna los datos del cliente
+                // Convertir Cliente a ClienteDto
+                return clienteMapper.toDTO(cliente);
             }
         }
         throw new RuntimeException("Usuario o contraseña incorrectos");
+    }
+
+    @Override
+    public List<Pedido> getAllPedido(Long id) {
+        return pedidoRepository.findByClienteId(id);
     }
 
 }

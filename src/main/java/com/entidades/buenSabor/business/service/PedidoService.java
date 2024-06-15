@@ -14,7 +14,7 @@ public interface PedidoService extends BaseService<Pedido,Long> {
 //    void actualizarStockArticulos(Long pedidoId);
     void validarStock(Set<DetallePedido> detalles);
 
-    void aplicarDescuento(Pedido pedido);
+    boolean aplicarDescuento(Pedido pedido);
 
     void calcularTiempoEstimado(Pedido pedido);
 

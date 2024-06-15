@@ -41,12 +41,12 @@ public class ClienteController extends BaseControllerImp<Cliente, ClienteDto, Cl
         return ResponseEntity.ok(facade.getAllPedidos(id));
     }
 
-    @GetMapping("/domicilios/{id}")
+    @GetMapping("/listDomiciliosCliente/{id}")
     public ResponseEntity<?> getAllDomicilios(@PathVariable Long id) {
         return ResponseEntity.ok(facade.getAllDomicilios(id));
     }
 
-    @PutMapping("/addDomicilios/{id}")
+    @PutMapping("/añadirDomicilioCliente/{id}")
     public ResponseEntity<?> addDomicilio(@PathVariable Long id, @RequestBody DomicilioCreateDto d) {
         return ResponseEntity.ok(facade.addDomicilio(d, id));
     }

@@ -11,6 +11,7 @@ import com.entidades.buenSabor.business.service.ClienteService;
 import com.entidades.buenSabor.domain.dto.Cliente.ClienteCreateDto;
 import com.entidades.buenSabor.domain.dto.Cliente.ClienteDto;
 import com.entidades.buenSabor.domain.dto.Domicilio.DomicilioCreateDto;
+import com.entidades.buenSabor.domain.dto.Domicilio.DomicilioDto;
 import com.entidades.buenSabor.domain.dto.PedidoDto.PedidoDto;
 import com.entidades.buenSabor.domain.entities.Cliente;
 import com.entidades.buenSabor.domain.entities.Domicilio;
@@ -41,6 +42,16 @@ public class ClienteFacadeImpl extends BaseFacadeImp<Cliente, ClienteDto, Client
 
     public List<PedidoDto> getAllPedidos(Long id) {
         return pedidoMapper.toDTOsList(clienteService.getAllPedido(id));
+    }
+
+    public List<DomicilioDto> getAllDomicilios(Long id) {
+        return domicilioMapper.toDTOsList(clienteService.getAllDomicilios(id));
+    }
+
+    @Override
+    public ClienteDto addDomicilio(DomicilioCreateDto d, Long id) {
+        Domicilio domicilioNew = domicilioMapper.toEntityCreate(d);
+        return baseMapper.toDTO(clienteService.addDomicilio(domicilioNew,id));
     }
 
 }

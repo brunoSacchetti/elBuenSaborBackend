@@ -81,4 +81,15 @@ public class ClienteServiceImpl extends BaseServiceImp<Cliente,Long> implements 
         return pedidoRepository.findByClienteId(id);
     }
 
+    @Override
+    public List<Domicilio> getAllDomicilios(Long id) {
+        return clienteRepository.findAllDomiciliosByClienteId(id);
+    }
+
+    public Cliente addDomicilio(Domicilio d, Long id){
+        Cliente cliente = getById(id);
+        cliente.getDomicilios().add(d);
+        return clienteRepository.save(cliente);
+    }
+
 }

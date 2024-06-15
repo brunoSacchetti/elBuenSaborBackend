@@ -25,5 +25,9 @@ public interface ClienteService extends BaseService<Cliente,Long> {
 
     List<Pedido> getAllPedido(Long id);
 
+    List<Domicilio>getAllDomicilios(Long id);
+
+    Cliente addDomicilio(Domicilio d, Long id);
+
 
 }

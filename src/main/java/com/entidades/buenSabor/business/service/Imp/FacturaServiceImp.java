@@ -159,25 +159,25 @@ public class FacturaServiceImp extends BaseServiceImp<Factura,Long> implements F
         for (DetallePedido detalle : detalles) {
             // Cantidad
             canvas.beginText()
-                    .setFontAndSize(font, 8)
+                    .setFontAndSize(font, 10)
                     .moveText(180, y) // Ajusta las coordenadas según sea necesario
                     .showText(String.valueOf(detalle.getCantidad()))
                     .endText();
             // Descripción
             canvas.beginText()
-                    .setFontAndSize(font, 8)
+                    .setFontAndSize(font, 10)
                     .moveText(250, y) // Ajusta las coordenadas según sea necesario
                     .showText(detalle.getArticulo().getDenominacion())
                     .endText();
             // Precio Unitario
             canvas.beginText()
-                    .setFontAndSize(font, 8)
+                    .setFontAndSize(font, 10)
                     .moveText(455, y) // Ajusta las coordenadas según sea necesario
                     .showText(String.valueOf(detalle.getArticulo().getPrecioVenta()))
                     .endText();
             // Subtotal
             canvas.beginText()
-                    .setFontAndSize(font, 8)
+                    .setFontAndSize(font, 10)
                     .moveText(530, y) // Ajusta las coordenadas según sea necesario
                     .showText(String.valueOf(detalle.getCantidad() * detalle.getArticulo().getPrecioVenta()))
                     .endText();
@@ -186,7 +186,7 @@ public class FacturaServiceImp extends BaseServiceImp<Factura,Long> implements F
 
         // Total del pedido
         canvas.beginText()
-                .setFontAndSize(font, 11)
+                .setFontAndSize(font, 13)
                 .moveText(518, 210) // Ajusta las coordenadas según sea necesario
                 .showText(String.valueOf(pedido.getTotal()))
                 .endText();

@@ -106,7 +106,7 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
     @Override
     public boolean aplicarDescuento(Pedido pedido) {
         if (pedido.getTipoEnvio() == TipoEnvio.TAKE_AWAY) {
-            pedido.setTotal(pedido.getTotal() * 0.9); // Aplicar 10% de descuento
+            pedido.setTotal(pedido.getTotal() * 0.9);
             return true;
         }
         return false;

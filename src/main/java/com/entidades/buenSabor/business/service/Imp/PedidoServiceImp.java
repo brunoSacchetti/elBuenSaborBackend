@@ -83,6 +83,25 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
         }
     }
 
+    //Metodo para volver al stock si es que rechazaron el pedido
+    private void revertirStock(Set<DetallePedido> detalles) {
+        for (DetallePedido detalle : detalles) {
+            Articulo articulo = detalle.getArticulo();
+            if (articulo instanceof ArticuloInsumo) {
+                ArticuloInsumo insumo = (ArticuloInsumo) articulo;
+                insumo.setStockActual(insumo.getStockActual() + detalle.getCantidad());
+                articuloInsumoService.update(insumo, insumo.getId());
+            } else {
+                ArticuloManufacturado articuloManufacturado = articuloManufacturadoService.getById(articulo.getId());
+                for (ArticuloManufacturadoDetalle amd : articuloManufacturado.getArticuloManufacturadoDetalles()) {
+                    ArticuloInsumo insumo = amd.getArticuloInsumo();
+                    insumo.setStockActual(insumo.getStockActual() + detalle.getCantidad());
+                    articuloInsumoService.update(insumo, insumo.getId());
+                }
+            }
+        }
+    }
+
 
     @Override
     public boolean aplicarDescuento(Pedido pedido) {
@@ -163,21 +182,21 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
             facturaRepository.save(factura);
         }
 
+        if (estado == Estado.FACTURADO) {
 
-        if (estado == Estado.ENTREGADO) {
+            System.out.println("ESTOY EN FACTURADO");
+
             try {
-                // creamos la factura  la factura PDF
                 byte[] facturaPdf = facturaService.generarFacturaPDF(pedido);
-
-                // traemos el email del cliente
                 String emailCliente = pedido.getCliente().getEmail();
-
-                // Enviar el email con la factura
-                sendEmailService.sendMail(facturaPdf, emailCliente, null, "Factura de Pedido " + pedido.getId(), "Adjunto encontrará la factura de su pedido.", "factura_" + pedido.getId() + ".pdf");
-
+                sendEmailService.sendMail(facturaPdf, emailCliente, null, "Factura de Pedido Nro " + pedido.getId(), "Revise su factura por favor.", "factura-buenSabor_" + pedido.getId() + ".pdf");
             } catch (java.io.IOException e) {
                 throw new RuntimeException("Error al generar o enviar la factura: " + e.getMessage(), e);
             }
+        }
+
+        if (estado == Estado.RECHAZADO) {
+            revertirStock(pedido.getDetallePedidos());
         }
 
         return pedidoRepository.save(pedido);

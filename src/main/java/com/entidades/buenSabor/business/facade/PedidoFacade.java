@@ -6,7 +6,7 @@ import com.entidades.buenSabor.domain.dto.PedidoDto.PedidoDto;
 import com.entidades.buenSabor.domain.dto.PedidoDto.PedidoEditDto;
 import com.entidades.buenSabor.domain.enums.Estado;
 
-public interface PedidoFacade extends BaseFacade<PedidoDto, PedidoCreateDto, PedidoEditDto, Long> {
+public interface PedidoFacade extends BaseFacade<PedidoDto, PedidoCreateDto, PedidoCreateDto, Long> {
     public PedidoDto cambiaEstado(Estado estado, Long id);
 
 

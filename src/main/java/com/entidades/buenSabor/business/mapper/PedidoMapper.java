@@ -12,7 +12,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = {DetallePedidoMapper.class, ClienteService.class, DomicilioService.class, FacturaService.class, FacturaMapper.class}) //SucursalService.class
-public interface PedidoMapper extends BaseMapper<Pedido, PedidoDto, PedidoCreateDto, PedidoEditDto> {
+public interface PedidoMapper extends BaseMapper<Pedido, PedidoDto, PedidoCreateDto, PedidoCreateDto> {
 
 
     //Por ahora no ocuparemos sucursal en ecommerce

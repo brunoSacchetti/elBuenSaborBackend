@@ -13,10 +13,22 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/pedido")
-public class PedidoController extends BaseControllerImp<Pedido, PedidoDto, PedidoCreateDto, PedidoEditDto,Long, PedidoFacadeImp> {
+public class PedidoController extends BaseControllerImp<Pedido, PedidoDto, PedidoCreateDto, PedidoCreateDto,Long, PedidoFacadeImp> {
     public PedidoController(PedidoFacadeImp facade) {
         super(facade);
     }
+
+    /* @PostMapping
+    public ResponseEntity<?> create (@RequestBody PedidoCreateDto pedidoCreateDto){
+        try {
+            return super.create(pedidoCreateDto);
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    } */
+
+    @PostMapping
+    public ResponseEntity<PedidoDto> create (@RequestBody PedidoCreateDto pedidoCreateDto){return super.create(pedidoCreateDto);}
 
     @PutMapping("/CambiarEstadoPedido/{id}")
     public ResponseEntity<PedidoDto> cambiaEstado(@RequestBody Estado estado, @PathVariable Long id ) {

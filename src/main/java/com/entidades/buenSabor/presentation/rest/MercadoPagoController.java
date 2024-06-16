@@ -26,7 +26,7 @@ public class MercadoPagoController {
     @Value("${mercado.pago.access.token}")
     private String accessToken;
     @PostMapping
-    public MpPreference getList(@RequestBody Pedido pedido) {
+    public MpPreference createPreference(@RequestBody Pedido pedido) {
         try {
 
             //Asignamos el token defindo en properties
@@ -36,9 +36,8 @@ public class MercadoPagoController {
                     .id(pedido.getId().toString())
                     .title("Compra realizada en el Buen Sabor")
                     .description("Pedido realizado - Buen Sabor - 2024")
-                    //.pictureUrl("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwIO85PD8j6F_gTdPtZC20xoE6MOVD0dcR_Q&s")
                     .quantity(1)
-                    .currencyId("ARG")
+                    .currencyId("ARS")
                     .unitPrice(new BigDecimal(pedido.getTotal()))
                     .build();
             List<PreferenceItemRequest> items = new ArrayList<>();

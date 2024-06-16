@@ -5,6 +5,7 @@ import com.entidades.buenSabor.domain.dto.Cliente.ClienteDto;
 import com.entidades.buenSabor.domain.dto.Domicilio.DomicilioCreateDto;
 import com.entidades.buenSabor.domain.dto.Domicilio.DomicilioDto;
 import com.entidades.buenSabor.domain.dto.Domicilio.DomicilioEditDto;
+import com.entidades.buenSabor.domain.dto.Domicilio.DomicilioParaPedidoDto;
 import com.entidades.buenSabor.domain.entities.Cliente;
 import com.entidades.buenSabor.domain.entities.Domicilio;
 import org.mapstruct.Mapper;
@@ -25,4 +26,8 @@ public interface DomicilioMapper extends BaseMapper<Domicilio, DomicilioDto, Dom
     @Named("toEntityCreateSetDomicilio")
     @Mapping(target = "localidad", source = "idLocalidad",qualifiedByName = "getById")
     Set<Domicilio> toEntityCreateSet(Set<DomicilioCreateDto> dtos);
+
+    @Mapping(target = "localidad.nombre", source = "localidad.nombre")
+    @Mapping(target = "localidad.id", source = "localidad.id")
+    List<DomicilioParaPedidoDto> toDtoPedido(List<Domicilio> source);
 }

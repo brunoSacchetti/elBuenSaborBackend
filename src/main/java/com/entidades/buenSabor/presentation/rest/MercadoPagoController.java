@@ -11,6 +11,7 @@ import com.mercadopago.client.preference.PreferenceRequest;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.preference.Preference;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -18,36 +19,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/apiMp")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
+@RequestMapping("/pagoMercadoPago")
 public class MercadoPagoController {
 
+    @Value("${mercado.pago.access.token}")
+    private String accessToken;
     @PostMapping
     public MpPreference getList(@RequestBody Pedido pedido) {
-
-        /*
-        *  List<PreferenceItemRequest> items = new ArrayList<>();
-        for (PedidoDetalleDto detalle : pedido.getPedidosDetalle()) {
-            PreferenceItemRequest itemRequest = PreferenceItemRequest.builder()
-                    .title(detalle.getTitle())
-                    .quantity(detalle.getQuantity())
-                    .unitPrice(new BigDecimal(detalle.getUnitPrice()))
-                    .build();
-            items.add(itemRequest);
-        }
-        *
-        * */
-
-
-
         try {
-            MercadoPagoConfig.setAccessToken("");
+
+            //Asignamos el token defindo en properties
+            MercadoPagoConfig.setAccessToken(accessToken);
 
             PreferenceItemRequest itemRequest = PreferenceItemRequest.builder()
                     .id(pedido.getId().toString())
-                    .title("compra producto")
-                    .description("Pedido realizado desde el carrito de compras")
-                    .pictureUrl("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwIO85PD8j6F_gTdPtZC20xoE6MOVD0dcR_Q&s")
+                    .title("Compra realizada en el Buen Sabor")
+                    .description("Pedido realizado - Buen Sabor - 2024")
+                    //.pictureUrl("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwIO85PD8j6F_gTdPtZC20xoE6MOVD0dcR_Q&s")
                     .quantity(1)
                     .currencyId("ARG")
                     .unitPrice(new BigDecimal(pedido.getTotal()))
@@ -56,7 +45,7 @@ public class MercadoPagoController {
             items.add(itemRequest);
 
             PreferenceBackUrlsRequest backUrls = PreferenceBackUrlsRequest.builder()
-                    .success("http://localhost:5173")
+                    .success("http://localhost:5173/pedidos")
                     .pending("http://localhost:5173")
                     .failure("http://localhost:5173")
                     .build();

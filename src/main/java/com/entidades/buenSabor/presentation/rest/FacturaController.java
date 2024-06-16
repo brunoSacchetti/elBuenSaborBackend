@@ -37,7 +37,7 @@ public class FacturaController extends BaseControllerImp<Factura, FacturaDto, Fa
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("attachment", "factura_BuenSabor" + pedidoId + ".pdf");
+        headers.setContentDispositionFormData("attachment", "BuenSabor-FacturaNroPedido" + pedidoId + ".pdf");
         headers.setContentLength(pdfContent.length);
 
         return ResponseEntity.ok()

@@ -16,7 +16,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Setter
 @Getter
-@ToString
 @SuperBuilder
 @Audited
 public class Cliente extends Base{

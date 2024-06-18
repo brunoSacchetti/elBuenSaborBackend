@@ -47,4 +47,8 @@ public class EstadisticasDashboardServiceImp implements EstadisticasDashboardSer
         return pedidoRepository.findCantidadPedidosPorCliente(fechaDesde,fechaHasta);
     }
 
+    public FechasLimites getFechasLimites(){
+        return pedidoRepository.getFechasLimites();
+    }
+
 }

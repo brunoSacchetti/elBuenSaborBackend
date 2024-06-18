@@ -1,6 +1,7 @@
 package com.entidades.buenSabor.presentation.rest;
 
 import com.entidades.buenSabor.business.service.EstadisticasDashboardService;
+import com.entidades.buenSabor.domain.dto.Estadisticas.FechasLimites;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +53,10 @@ public class EstadisticasDashboardController {
         return ResponseEntity.ok(estadisticas.findCantidadPedidosPorCliente(fechaDesde, fechaHasta));
     }
 
+    @GetMapping("/limite-fechas")
+    public FechasLimites getFechasLimites() {
+        return estadisticas.getFechasLimites();
+    }
 
 
 }

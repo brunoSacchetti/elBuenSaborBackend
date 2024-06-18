@@ -15,5 +15,5 @@ public interface EstadisticasDashboardService {
     //MontoGananciaDto findCostosGananciasByFecha(LocalDate fechaDesde, LocalDate fechaHasta);
     List<CantidadPedidosClienteDto> findCantidadPedidosPorCliente(Date fechaDesde, Date fechaHasta);
 
-
+    FechasLimites getFechasLimites();
 }

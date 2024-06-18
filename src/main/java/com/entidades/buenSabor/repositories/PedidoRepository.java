@@ -1,6 +1,7 @@
 package com.entidades.buenSabor.repositories;
 
 import com.entidades.buenSabor.domain.dto.Estadisticas.CantidadPedidosClienteDto;
+import com.entidades.buenSabor.domain.dto.Estadisticas.FechasLimites;
 import com.entidades.buenSabor.domain.dto.Estadisticas.IngresosDiariosMensualesDto;
 import com.entidades.buenSabor.domain.dto.EstadisticasDashboard.CostoGanancia;
 import com.entidades.buenSabor.domain.dto.EstadisticasDashboard.IngresosDiarios;
@@ -73,6 +74,10 @@ public interface PedidoRepository extends BaseRepository<Pedido,Long>{
     List<CantidadPedidosClienteDto> findCantidadPedidosPorCliente(Date fechaDesde, Date fechaHasta);
 
 
+    @Query("SELECT NEW com.entidades.buenSabor.domain.dto.Estadisticas.FechasLimites(" +
+            "function('DATE', MIN(p.fechaPedido)), function('DATE', MAX(p.fechaPedido))) " +
+            "FROM Pedido p")
+    FechasLimites getFechasLimites();
 
     List<Pedido> findByClienteId(Long clienteId);
 }

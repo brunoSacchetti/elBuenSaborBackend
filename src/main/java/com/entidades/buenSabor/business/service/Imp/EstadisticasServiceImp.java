@@ -28,7 +28,7 @@ public class EstadisticasServiceImp implements EstadisticasService {
     @Autowired
     PedidoRepository pedidoRepository;
 
-    @Override
+    /* @Override
     public List<RankingProductos> bestProducts(Date initialDate, Date endDate) {
         return detallePedidoRepository.bestProducts(initialDate, endDate);
     }
@@ -53,7 +53,7 @@ public class EstadisticasServiceImp implements EstadisticasService {
         return pedidoRepository.findCantidadPedidosPorCliente(startDate,endDate);
     }
 
-    @Override
+    /* @Override
     public byte[] generarReporteExcel(Date fechaDesde, Date fechaHasta) throws IOException {
         Workbook workbook = new HSSFWorkbook();
         Sheet sheet = workbook.createSheet("Ranking de comidas");
@@ -184,5 +184,5 @@ public class EstadisticasServiceImp implements EstadisticasService {
         workbook.close();
 
         return baos.toByteArray();
-    }
+    } */
 }

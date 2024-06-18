@@ -5,11 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RankingProductosDto {
-    private Long cantidad;
-    private String denominacion;
+public class IngresosDiariosMensualesDto {
+    private Date dia;
+    private Double Ingresos;
 }

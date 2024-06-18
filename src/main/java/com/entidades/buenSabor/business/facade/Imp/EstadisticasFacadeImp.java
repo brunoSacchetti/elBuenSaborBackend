@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class EstadisticasFacadeImp implements EstadisticasFacade {
 
-    @Autowired
+   /*  @Autowired
     private EstadisticasService estadisticasService;
 
     @Override
@@ -45,5 +45,5 @@ public class EstadisticasFacadeImp implements EstadisticasFacade {
     @Override
     public byte[] generarReporteExcel(Date fechaDesde, Date fechaHasta) throws IOException {
         return estadisticasService.generarReporteExcel(fechaDesde,fechaHasta);
-    }
+    } */
 }

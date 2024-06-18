@@ -10,10 +10,10 @@ import java.util.List;
 public interface EstadisticasDashboardService {
 
     List<RankingProductosDto> productosMasVendidos(Date fechaDesde, Date fechaHasta);
-    List<IngresosDiariosDto> ingresosDiarios(Date fechaDesde, Date fechaHasta);
-    List<IngresosMensualesDto> ingresosMensuales(Date fechaDesde, Date fechaHasta);
-    MontoGananciaDto findCostosGananciasByFecha(LocalDate fechaDesde, LocalDate fechaHasta);
-    List<CantidadPedidosClienteDto> findCantidadPedidosPorCliente(LocalDate fechaDesde, LocalDate fechaHasta);
+    List<IngresosDiariosMensualesDto> ingresosDiarioYMensual(Date fechaDesde, Date fechaHasta);
+    //List<IngresosMensualesDto> ingresosMensuales(Date fechaDesde, Date fechaHasta);
+    //MontoGananciaDto findCostosGananciasByFecha(LocalDate fechaDesde, LocalDate fechaHasta);
+    List<CantidadPedidosClienteDto> findCantidadPedidosPorCliente(Date fechaDesde, Date fechaHasta);
 
 
 }

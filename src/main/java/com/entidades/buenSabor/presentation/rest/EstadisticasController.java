@@ -17,7 +17,7 @@ import java.util.Date;
 @RequestMapping("/estadisticas")
 public class EstadisticasController {
 
-    @Autowired
+    /* @Autowired
     private EstadisticasFacade estadisticasFacade;
 
     @GetMapping("/ranking")
@@ -68,5 +68,5 @@ public class EstadisticasController {
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(excelContent);
-    }
+    } */
 }

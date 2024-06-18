@@ -1,7 +1,7 @@
 package com.entidades.buenSabor.business.service.Imp;
 
 import com.entidades.buenSabor.business.service.EstadisticasService;
-import com.entidades.buenSabor.domain.dto.Estadisticas.*;
+import com.entidades.buenSabor.domain.dto.EstadisticasDashboard.*;
 import com.entidades.buenSabor.repositories.DetallePedidoRepository;
 import com.entidades.buenSabor.repositories.PedidoRepository;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;

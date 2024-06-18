@@ -50,7 +50,7 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
         pedido.setFechaPedido(LocalDate.now());
         pedido.setEstado(Estado.PENDIENTE);
         calcularTotal(pedido);
-        validarStock(pedido.getDetallePedidos());
+        disminucionStock(pedido.getDetallePedidos());
         aplicarDescuento(pedido);
         calcularTiempoEstimado(pedido);
         calcularTotalCosto(pedido);
@@ -58,7 +58,7 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
     }
 
     @Override
-    public void validarStock(Set<DetallePedido> detalles) throws RuntimeException {
+    public void disminucionStock(Set<DetallePedido> detalles) throws RuntimeException {
         for (DetallePedido detalle : detalles) {
             Articulo articulo = detalle.getArticulo();
             if (articulo instanceof ArticuloInsumo) {
@@ -84,7 +84,7 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
     }
 
     //Metodo para volver al stock si es que rechazaron el pedido
-    private void revertirStock(Set<DetallePedido> detalles) {
+    public void volverStockAnterior(Set<DetallePedido> detalles) {
         for (DetallePedido detalle : detalles) {
             Articulo articulo = detalle.getArticulo();
             if (articulo instanceof ArticuloInsumo) {
@@ -196,7 +196,7 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
         }
 
         if (estado == Estado.RECHAZADO) {
-            revertirStock(pedido.getDetallePedidos());
+            volverStockAnterior(pedido.getDetallePedidos());
         }
 
         return pedidoRepository.save(pedido);

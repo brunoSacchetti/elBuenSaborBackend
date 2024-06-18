@@ -1,4 +1,4 @@
-package com.entidades.buenSabor.domain.dto.Estadisticas;
+package com.entidades.buenSabor.domain.dto.EstadisticasDashboard;
 
 public interface PedidosCliente {
     String getEmail();

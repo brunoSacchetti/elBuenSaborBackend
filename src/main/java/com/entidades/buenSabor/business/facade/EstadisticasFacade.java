@@ -1,6 +1,6 @@
 package com.entidades.buenSabor.business.facade;
 
-import com.entidades.buenSabor.domain.dto.Estadisticas.*;
+import com.entidades.buenSabor.domain.dto.EstadisticasDashboard.*;
 
 import java.io.IOException;
 import java.time.LocalDate;

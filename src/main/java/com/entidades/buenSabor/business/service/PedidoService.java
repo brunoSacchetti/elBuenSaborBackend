@@ -12,7 +12,9 @@ public interface PedidoService extends BaseService<Pedido,Long> {
     //Pedido save(PedidoCreateDto pedidoCreateDto);
 //     Pedido update(PedidoCreateDto pedidoCreateDto, Long id);
 //    void actualizarStockArticulos(Long pedidoId);
-    void validarStock(Set<DetallePedido> detalles);
+    void disminucionStock(Set<DetallePedido> detalles);
+
+    void volverStockAnterior(Set<DetallePedido> detalles);
 
     boolean aplicarDescuento(Pedido pedido);
 

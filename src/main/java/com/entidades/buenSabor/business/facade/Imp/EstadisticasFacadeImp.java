@@ -2,7 +2,7 @@ package com.entidades.buenSabor.business.facade.Imp;
 
 import com.entidades.buenSabor.business.facade.EstadisticasFacade;
 import com.entidades.buenSabor.business.service.EstadisticasService;
-import com.entidades.buenSabor.domain.dto.Estadisticas.*;
+import com.entidades.buenSabor.domain.dto.EstadisticasDashboard.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

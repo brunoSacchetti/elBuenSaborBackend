@@ -4,9 +4,12 @@ import com.entidades.buenSabor.business.service.EstadisticasDashboardService;
 import com.entidades.buenSabor.domain.dto.Estadisticas.FechasLimites;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -19,7 +22,7 @@ public class EstadisticasDashboardController {
     EstadisticasDashboardService estadisticas;
 
     @GetMapping("/rankingProductos")
-    public ResponseEntity<?> rankin (
+    public ResponseEntity<?> rankingProductos (
             @RequestParam("fechaDesde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDesde,
             @RequestParam("fechaHasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaHasta){
         return ResponseEntity.ok(estadisticas.productosMasVendidos(fechaDesde, fechaHasta));
@@ -58,5 +61,49 @@ public class EstadisticasDashboardController {
         return estadisticas.getFechasLimites();
     }
 
+    @GetMapping("/excel/ranking-productos")
+    public ResponseEntity<?> excelRanking (
+            @RequestParam("fechaDesde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDesde,
+            @RequestParam("fechaHasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaHasta) throws IOException {
+        byte[] excelContent = estadisticas.generarExcelRanking(fechaDesde, fechaHasta);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.set(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=ranking-productos.xls");
+        headers.setContentLength(excelContent.length);
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(excelContent);
+    }
+
+    @GetMapping("/excel/ingresos")
+    public ResponseEntity<?> excelIngresos (
+            @RequestParam("fechaDesde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDesde,
+            @RequestParam("fechaHasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaHasta) throws IOException {
+        byte[] excelContent = estadisticas.generarExcelIngresos(fechaDesde, fechaHasta);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.set(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=ingresos-diarios-mensuales.xls");
+        headers.setContentLength(excelContent.length);
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(excelContent);
+    }
+
+    @GetMapping("/excel/pedidos-clientes")
+    public ResponseEntity<?> excelClientesPedidos (
+            @RequestParam("fechaDesde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDesde,
+            @RequestParam("fechaHasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaHasta) throws IOException {
+        byte[] excelContent = estadisticas.generarExcelClientes(fechaDesde, fechaHasta);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.set(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=pedidos-por-cliente.xls");
+        headers.setContentLength(excelContent.length);
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(excelContent);
+    }
 
 }

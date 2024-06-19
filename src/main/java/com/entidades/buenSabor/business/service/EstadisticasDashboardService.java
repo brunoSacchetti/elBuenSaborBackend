@@ -3,6 +3,7 @@ package com.entidades.buenSabor.business.service;
 import com.entidades.buenSabor.domain.dto.Estadisticas.*;
 import com.entidades.buenSabor.domain.dto.EstadisticasDashboard.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +15,13 @@ public interface EstadisticasDashboardService {
     //List<IngresosMensualesDto> ingresosMensuales(Date fechaDesde, Date fechaHasta);
     //MontoGananciaDto findCostosGananciasByFecha(LocalDate fechaDesde, LocalDate fechaHasta);
     List<CantidadPedidosClienteDto> findCantidadPedidosPorCliente(Date fechaDesde, Date fechaHasta);
-
     FechasLimites getFechasLimites();
+
+    // METODOS EXCEL
+    byte[] generarExcelRanking(Date fechaDesde, Date fechaHasta) throws IOException;
+
+    byte[] generarExcelIngresos(Date fechaDesde, Date fechaHasta) throws IOException;
+
+    byte[] generarExcelClientes(Date fechaDesde, Date fechaHasta) throws IOException;
+
 }

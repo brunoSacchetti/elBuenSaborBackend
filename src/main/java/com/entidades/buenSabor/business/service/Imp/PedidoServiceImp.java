@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 @Service
 public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements PedidoService {
@@ -56,6 +57,7 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
         calcularTotalCosto(pedido);
         return super.create(pedido);
     }
+    private static final Logger logger = Logger.getLogger(PedidoServiceImp.class.getName());
 
     @Override
     public void disminucionStock(Set<DetallePedido> detalles) throws RuntimeException {
@@ -76,8 +78,12 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
                         throw new RuntimeException("Stock insuficiente para el artículo: " + amd.getArticuloInsumo().getDenominacion());
                     }
                     // Decrementar el stock
-                    amd.getArticuloInsumo().setStockActual(amd.getArticuloInsumo().getStockActual() - detalle.getCantidad());
+                    amd.getArticuloInsumo().setStockActual(amd.getArticuloInsumo().getStockActual() - detalle.getCantidad() * amd.getCantidad());
                     articuloService.update(amd.getArticuloInsumo(), amd.getArticuloInsumo().getId());
+
+                    // Registro del decremento de stock
+                    logger.info("Stock del artículo insumo '" + amd.getArticuloInsumo().getDenominacion() + "' en el artículo manufacturado '"
+                            + articuloManufacturado.getDenominacion() + "' disminuido en " + detalle.getCantidad() * amd.getCantidad());
                 }
             }
         }
@@ -95,8 +101,12 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
                 ArticuloManufacturado articuloManufacturado = articuloManufacturadoService.getById(articulo.getId());
                 for (ArticuloManufacturadoDetalle amd : articuloManufacturado.getArticuloManufacturadoDetalles()) {
                     ArticuloInsumo insumo = amd.getArticuloInsumo();
-                    insumo.setStockActual(insumo.getStockActual() + detalle.getCantidad());
+                    insumo.setStockActual(insumo.getStockActual() + detalle.getCantidad() * amd.getCantidad());
                     articuloInsumoService.update(insumo, insumo.getId());
+
+                    // Registro del decremento de stock
+                    logger.info("Stock del artículo insumo '" + amd.getArticuloInsumo().getDenominacion() + "' en el artículo manufacturado '"
+                            + articuloManufacturado.getDenominacion() + "' aumentado en " + detalle.getCantidad() * amd.getCantidad());
                 }
             }
         }

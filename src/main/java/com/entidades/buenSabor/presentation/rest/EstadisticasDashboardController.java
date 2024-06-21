@@ -14,8 +14,8 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/estadisticasDashboard")
+@CrossOrigin("*")
 public class EstadisticasDashboardController {
 
     @Autowired

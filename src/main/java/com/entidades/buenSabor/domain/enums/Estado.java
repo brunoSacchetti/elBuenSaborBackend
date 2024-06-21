@@ -4,8 +4,8 @@ public enum Estado {
     PENDIENTE,
     PREPARACION,
     FACTURADO,
-    ENTREGADO,
     DELIVERY,
+    ENTREGADO,
     RECHAZADO,
     CANCELADO,
 

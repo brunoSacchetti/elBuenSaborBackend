@@ -50,9 +50,9 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
     public Pedido create(Pedido pedido) throws RuntimeException{
         pedido.setFechaPedido(LocalDate.now());
         pedido.setEstado(Estado.PENDIENTE);
-        calcularTotal(pedido);
+        //calcularTotal(pedido);
         disminucionStock(pedido.getDetallePedidos());
-        aplicarDescuento(pedido);
+        //aplicarDescuento(pedido);
         calcularTiempoEstimado(pedido);
         calcularTotalCosto(pedido);
         return super.create(pedido);

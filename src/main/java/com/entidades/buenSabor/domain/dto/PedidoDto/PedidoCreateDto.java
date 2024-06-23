@@ -23,7 +23,7 @@ public class PedidoCreateDto {
 
     //@Schema(type = "string", format = "time", pattern = "HH:mm:ss", description = "Horario de apertura en formato HH:mm:ss")
     //private LocalTime horaEstimadaFinalizacion;
-    //private Double total;
+    private Double total;
     //private Double totalCosto;
     //private Estado estado;
     private TipoEnvio tipoEnvio;

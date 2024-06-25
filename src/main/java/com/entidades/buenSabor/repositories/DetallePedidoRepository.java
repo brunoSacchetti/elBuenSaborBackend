@@ -11,17 +11,6 @@ import java.util.List;
 
 @Repository
 public interface DetallePedidoRepository extends BaseRepository<DetallePedido,Long>{
-    /* @Query(value = "select  am.denominacion as denominacion, count(am.id) as countVentas \n" +
-            "from detalle_pedido dp\n" +
-            "         inner join articulo am\n" +
-            "                    on am.id = dp.articulo_id\n" +
-            "         inner join pedido p\n" +
-            "                    on dp.pedido_id = p.id\n" +
-            "where PARSEDATETIME(p.fecha_pedido, 'yyyy-MM-dd') between :initialDate and :endDate \n" +
-            "group by am.id,am.denominacion \n" +
-            "order by countVentas desc;",
-            nativeQuery = true) */
-
     @Query("SELECT NEW com.entidades.buenSabor.domain.dto.Estadisticas.RankingProductosDto(SUM(dp.cantidad), a.denominacion) " +
             "FROM Pedido p " +
             "INNER JOIN p.detallePedidos dp " +

@@ -39,12 +39,12 @@ public class EstadisticasDashboardServiceImp implements EstadisticasDashboardSer
     /* @Override
     public List<IngresosMensualesDto> ingresosMensuales(Date fechaDesde, Date fechaHasta) {
         return pedidoRepository.ingresosMensuales(fechaDesde, fechaHasta);
-    }
+    }*/
 
     @Override
-    public MontoGananciaDto findCostosGananciasByFecha(LocalDate fechaDesde, LocalDate fechaHasta) {
+    public MontoGananciaDto findCostosGananciasByFecha(Date fechaDesde, Date fechaHasta) {
         return pedidoRepository.findCostosGananciasByFecha(fechaDesde, fechaHasta);
-    } */
+    }
 
     @Override
     public List<CantidadPedidosClienteDto> findCantidadPedidosPorCliente(Date fechaDesde, Date fechaHasta) {
@@ -300,4 +300,38 @@ public class EstadisticasDashboardServiceImp implements EstadisticasDashboardSer
 
         return baos.toByteArray();
     }
+    @Override
+    public byte[] generarExcelResultadoEconomico(Date fechaDesde, Date fechaHasta) throws IOException {
+        Workbook workbook = new HSSFWorkbook();
+        Sheet sheet5 = workbook.createSheet("Resultado Economico");
+
+        // Crear encabezado
+        Row headerRowGanancia = sheet5.createRow(0);
+        String[] headersGanancia = {"Ganancia", "Costo", "Resultado Economico"};
+        for (int i = 0; i < headersGanancia.length; i++) {
+            Cell cell = headerRowGanancia.createCell(i);
+            cell.setCellValue(headersGanancia[i]);
+        }
+
+        MontoGananciaDto costoGanancias = findCostosGananciasByFecha(fechaDesde, fechaHasta);
+
+        int rowNum = 1;
+        Row row = sheet5.createRow(rowNum++);
+        row.createCell(0).setCellValue(costoGanancias.getGanancias());
+        row.createCell(1).setCellValue(costoGanancias.getCostos());
+        row.createCell(2).setCellValue(costoGanancias.getResultado());
+
+
+        // Autosize columns
+        for (int i = 0; i < headersGanancia.length; i++) {
+            sheet5.autoSizeColumn(i);
+        }
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        workbook.write(baos);
+        workbook.close();
+
+        return baos.toByteArray();
+    }
+
 }

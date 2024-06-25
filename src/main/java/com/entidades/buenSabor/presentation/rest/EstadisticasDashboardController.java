@@ -42,12 +42,12 @@ public class EstadisticasDashboardController {
         return ResponseEntity.ok(estadisticas.ingresosMensuales(fechaDesde, fechaHasta));
     } */
 
-    /* @GetMapping("/costosGanancias")
+    @GetMapping("/resultadoEconomico")
     public ResponseEntity<?> costosGanancias (
-            @RequestParam("fechaDesde") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaDesde,
-            @RequestParam("fechaHasta") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaHasta){
+            @RequestParam("fechaDesde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDesde,
+            @RequestParam("fechaHasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaHasta){
         return ResponseEntity.ok(estadisticas.findCostosGananciasByFecha(fechaDesde, fechaHasta));
-    }*/
+    }
 
     @GetMapping("/pedidosCliente")
     public ResponseEntity<?> pedidosCliente (
@@ -99,6 +99,21 @@ public class EstadisticasDashboardController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headers.set(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=pedidos-por-cliente.xls");
+        headers.setContentLength(excelContent.length);
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(excelContent);
+    }
+
+    @GetMapping("/excel/resultado-economico")
+    public ResponseEntity<?> excelresultadoEconomico (
+            @RequestParam("fechaDesde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDesde,
+            @RequestParam("fechaHasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaHasta) throws IOException {
+        byte[] excelContent = estadisticas.generarExcelResultadoEconomico(fechaDesde, fechaHasta);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.set(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=resultado-economico.xls");
         headers.setContentLength(excelContent.length);
 
         return ResponseEntity.ok()

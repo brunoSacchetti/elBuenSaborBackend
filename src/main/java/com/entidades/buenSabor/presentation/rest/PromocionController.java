@@ -23,14 +23,14 @@ public class PromocionController extends BaseControllerImp<Promocion, PromocionD
 
     @Override
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('EMPLEADO','ADMIN')")
+    //@PreAuthorize("hasAnyAuthority('EMPLEADO','ADMIN')")
     public ResponseEntity<PromocionDto> create(PromocionCreate entity){
         return super.create(entity);
     }
 
     @Override
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('EMPLEADO','ADMIN')")
+    //@PreAuthorize("hasAnyAuthority('EMPLEADO','ADMIN')")
     public ResponseEntity<PromocionDto> edit(PromocionEdit edit, Long id){
         return super.edit(edit, id);
     }
@@ -53,7 +53,7 @@ public class PromocionController extends BaseControllerImp<Promocion, PromocionD
     }
 
     // Método POST para subir imágenes
-    @PreAuthorize("hasAnyAuthority('EMPLEADO','ADMIN')")
+    //@PreAuthorize("hasAnyAuthority('EMPLEADO','ADMIN')")
     @PostMapping("/uploads")
     public ResponseEntity<String> uploadImages(
             @RequestParam(value = "uploads", required = true) MultipartFile[] files,
@@ -67,7 +67,7 @@ public class PromocionController extends BaseControllerImp<Promocion, PromocionD
     }
 
     // Método POST para eliminar imágenes por su publicId y Long
-    @PreAuthorize("hasAnyAuthority('EMPLEADO','ADMIN')")
+    //@PreAuthorize("hasAnyAuthority('EMPLEADO','ADMIN')")
     @PostMapping("/deleteImg")
     public ResponseEntity<String> deleteById(
             @RequestParam(value = "publicId", required = true) String publicId,

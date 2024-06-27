@@ -172,7 +172,7 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
         return create(pedido);
     } */
 
-    @Override
+    /* @Override
     public Pedido cambiaEstado(Estado estado, Long id) {
         Pedido pedido = getById(id);
         pedido.setEstado(estado);
@@ -210,7 +210,68 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
         }
 
         return pedidoRepository.save(pedido);
+    } */
+    @Override
+    public Pedido cambiaEstado(Estado estado, Long id) {
+        Pedido pedido = getById(id);
+        pedido.setEstado(estado);
+
+        System.out.println("Estado del pedido en cambiaEstado: " + pedido.getEstado());
+
+        switch (estado) {
+            case PREPARACION:
+                Factura factura = new Factura();
+                factura.setFechaFacturacion(LocalDate.now());
+                if (aplicarDescuento(pedido)){
+                    factura.setMontoDescuento(10);
+                } else {
+                    factura.setMontoDescuento(0);
+                }
+                factura.setFormaPago(pedido.getFormaPago());
+                factura.setTotalVenta(pedido.getTotal());
+                pedido.setFactura(factura);
+
+                facturaRepository.save(factura);
+                break;
+
+            case FACTURADO:
+                System.out.println("ESTOY EN FACTURADO");
+
+                try {
+                    byte[] facturaPdf = facturaService.generarFacturaPDF(pedido);
+                    String emailCliente = pedido.getCliente().getEmail();
+                    sendEmailService.sendMail(facturaPdf, emailCliente, null, "Factura de Pedido Nro " + pedido.getId(), "Revise su factura por favor.", "factura-buenSabor_" + pedido.getId() + ".pdf");
+                } catch (java.io.IOException e) {
+                    throw new RuntimeException("Error al generar o enviar la factura: " + e.getMessage(), e);
+                }
+                break;
+
+            case RECHAZADO:
+                volverStockAnterior(pedido.getDetallePedidos());
+                break;
+
+            case DELIVERY:
+                // Lógica para el estado DELIVERY
+                // Aquí podrías agregar alguna lógica específica si es necesario, como notificar al cliente que el pedido está en camino.
+                System.out.println("El pedido está en proceso de entrega.");
+                break;
+
+            case ENTREGADO:
+                // Lógica para el estado ENTREGADO
+                // Podrías actualizar la fecha de entrega o cualquier otra información relevante.
+                pedido.setFechaPedido(LocalDate.now());
+                System.out.println("El pedido ha sido entregado.");
+                break;
+
+            default:
+                break;
+        }
+
+        System.out.println("PEDIDO ACTUALIZADO: " + pedido);
+
+        return pedidoRepository.save(pedido);
     }
+
 
     private void calcularTotal(Pedido pedido) {
         double total = 0.0;

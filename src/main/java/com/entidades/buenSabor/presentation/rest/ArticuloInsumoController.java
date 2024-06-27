@@ -43,7 +43,7 @@ public class ArticuloInsumoController  extends BaseControllerImp<ArticuloInsumo,
         return super.edit(editDto, id);
     }
 
-    @PreAuthorize("hasAnyAuthority('EMPLEADO','ADMIN')")
+    //@PreAuthorize("hasAnyAuthority('EMPLEADO','ADMIN')")
     @PutMapping("/changeHabilitado/{id}")
     public ResponseEntity<?> changeHabilitado(@PathVariable Long id){
         facade.changeHabilitado(id);

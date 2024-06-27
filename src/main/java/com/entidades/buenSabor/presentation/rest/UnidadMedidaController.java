@@ -26,7 +26,7 @@ public class UnidadMedidaController extends BaseControllerImp<UnidadMedida, Unid
 
     @PutMapping("/{id}")
     @Override
-    @PreAuthorize("hasAnyAuthority('EMPLEADO','ADMIN')")
+    //@PreAuthorize("hasAnyAuthority('EMPLEADO','ADMIN')")
     public ResponseEntity<UnidadMedidaDto> edit(UnidadDeMedidaEditDto edit, Long id){
         return super.edit(edit,id);
     }

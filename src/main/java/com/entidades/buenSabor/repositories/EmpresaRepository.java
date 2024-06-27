@@ -11,4 +11,6 @@ public interface EmpresaRepository extends BaseRepository<Empresa,Long> {
     @Query("SELECT e FROM Empresa e LEFT JOIN FETCH e.sucursales WHERE e.id = :id")
     Empresa findWithSucursalesById(@Param("id") Long id);
 
+    @Query("SELECT DISTINCT e FROM Empresa e LEFT JOIN FETCH e.sucursales s WHERE e.id = :id")
+    Empresa getByIdIncludingSucursales(@Param("id") Long id);
 }

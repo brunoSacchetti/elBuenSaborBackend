@@ -30,7 +30,7 @@ public class EmpresaServiceImpl extends BaseServiceImp<Empresa,Long> implements 
     @Autowired
     EmpresaRepository empresaRepository;
 
-    @Override
+    /* @Override
     public Empresa getEmpresaSucursales(Long idEmpresa) {
         Empresa empresa = baseRepository.getById(idEmpresa);
         // Se filtran las sucursales eliminadas y se juntan
@@ -39,6 +39,17 @@ public class EmpresaServiceImpl extends BaseServiceImp<Empresa,Long> implements 
                 .collect(Collectors.toSet());
         // Se actualiza el conjunto de sucursales de la empresa.
         empresa.setSucursales(sucursales);
+        return empresa;
+    } */
+
+    @Override
+    public Empresa getEmpresaSucursales(Long idEmpresa) {
+        // Obtener la empresa con todas las sucursales (incluidas las eliminadas)
+        Empresa empresa = empresaRepository.getByIdIncludingSucursales(idEmpresa);
+
+        // No es necesario filtrar manualmente las sucursales eliminadas aquí,
+        // ya que las obtuvimos todas incluyendo las eliminadas.
+
         return empresa;
     }
 

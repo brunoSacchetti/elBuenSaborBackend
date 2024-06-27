@@ -54,4 +54,6 @@ public interface BaseRepository <E extends Base, ID extends Serializable> extend
         logger.info("EJECUTANDO GET BY ID INCLUYENDO ELIMINADOS");
         return findById(id);
     }
+
+    List<E> findAllByEliminadoTrue();
 }

@@ -63,5 +63,14 @@ public abstract class BaseFacadeImp <E extends Base,D extends BaseDto, DC, DE,ID
         baseService.changeEliminado(id);
     }
 
+    public List<D> getAllIncludingDeleted() {
+        // trae una lista de entidades incluyendo eliminadas
+        var entities = baseService.getAllIncludingDeleted();
+        // devuelve una lista de DTO
+        return entities
+                .stream()
+                .map(baseMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 
 }

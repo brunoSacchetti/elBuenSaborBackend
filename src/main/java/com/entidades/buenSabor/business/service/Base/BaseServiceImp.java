@@ -72,4 +72,10 @@ public abstract class BaseServiceImp<E extends Base,ID extends Serializable> imp
         logger.info("Cambio de estado 'eliminado' de la entidad {}", entity);
     }
 
+    public List<E> getAllIncludingDeleted() {
+        var entities = baseRepository.findAll();
+        logger.info("Obtenidas entidades incluyendo eliminadas {}", entities);
+        return entities;
+    }
+
 }

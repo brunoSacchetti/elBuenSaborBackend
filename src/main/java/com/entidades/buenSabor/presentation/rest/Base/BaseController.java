@@ -20,4 +20,6 @@ public interface BaseController <D extends BaseDto, DC, DE, ID extends Serializa
 
     ResponseEntity<?> deleteById(ID id) throws RestrictDeleteException;
     ResponseEntity<?> changeEliminado(ID id);
+
+    ResponseEntity<List<D>> getAllIncludingDeleted();
 }

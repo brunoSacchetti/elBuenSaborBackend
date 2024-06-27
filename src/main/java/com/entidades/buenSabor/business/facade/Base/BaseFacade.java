@@ -15,4 +15,6 @@ public interface BaseFacade <D extends BaseDto, DC, DE, ID extends Serializable>
     public D update(DE request, Long id);
 
     public void changeEliminado(ID id);
+
+    public List<D> getAllIncludingDeleted();
 }

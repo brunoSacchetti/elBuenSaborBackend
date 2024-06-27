@@ -58,4 +58,10 @@ public abstract class BaseControllerImp <E extends Base,D extends BaseDto, DC, D
         facade.changeEliminado(id);
         return ResponseEntity.ok("Cambio realizado con exito");
     }
+
+    @GetMapping("/incluyendoEliminados")
+    public ResponseEntity<List<D>> getAllIncludingDeleted() {
+        logger.info("INICIO GET ALL INCLUYENDO ELIMINADOS");
+        return ResponseEntity.ok(facade.getAllIncludingDeleted());
+    }
 }

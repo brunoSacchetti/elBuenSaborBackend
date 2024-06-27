@@ -16,4 +16,6 @@ public interface BaseService <E extends Base, ID extends Serializable>{
     public E getById(ID id);
 
     public void changeEliminado(ID id);
+
+    public List<E> getAllIncludingDeleted();
 }

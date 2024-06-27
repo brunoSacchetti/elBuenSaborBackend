@@ -52,4 +52,10 @@ public abstract class BaseControllerImp <E extends Base,D extends BaseDto, DC, D
         facade.deleteById(id);
         return ResponseEntity.ok(null);
     }
+
+    @PutMapping("/cambiarEliminado/{id}")
+    public ResponseEntity<?> changeEliminado(@PathVariable ID id){
+        facade.changeEliminado(id);
+        return ResponseEntity.ok("Cambio realizado con exito");
+    }
 }

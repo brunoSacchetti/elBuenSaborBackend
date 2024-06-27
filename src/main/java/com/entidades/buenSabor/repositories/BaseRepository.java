@@ -10,6 +10,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 @NoRepositoryBean
 public interface BaseRepository <E extends Base, ID extends Serializable> extends JpaRepository<E, ID> {
@@ -47,5 +48,10 @@ public interface BaseRepository <E extends Base, ID extends Serializable> extend
         logger.info("EJECUTANDO GET ALL PERSONALIZADO");
         var entities = findAll().stream().filter(e -> !e.isEliminado()).toList();
         return entities;
+    }
+
+    default Optional<E> getByIdIncludeDeleted(ID id) {
+        logger.info("EJECUTANDO GET BY ID INCLUYENDO ELIMINADOS");
+        return findById(id);
     }
 }

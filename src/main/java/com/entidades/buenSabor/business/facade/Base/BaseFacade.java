@@ -13,4 +13,6 @@ public interface BaseFacade <D extends BaseDto, DC, DE, ID extends Serializable>
     public List<D> getAll();
     public void deleteById(Long id) throws RestrictDeleteException;
     public D update(DE request, Long id);
+
+    public void changeEliminado(ID id);
 }

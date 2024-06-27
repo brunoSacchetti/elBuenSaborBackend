@@ -56,4 +56,20 @@ public abstract class BaseServiceImp<E extends Base,ID extends Serializable> imp
         logger.info("Actualizada entidad {}",newEntity);
         return newEntity;
     }
+
+    @Override
+    public void changeEliminado(ID id) {
+        var optionalEntity = baseRepository.getByIdIncludeDeleted(id);
+        if (optionalEntity.isEmpty()) {
+            String errMsg = "La entidad con el id " + id + " no existe.";
+            logger.error(errMsg);
+            throw new RuntimeException(errMsg);
+        }
+
+        var entity = optionalEntity.get();
+        entity.setEliminado(!entity.getEliminado());
+        update(entity, id);
+        logger.info("Cambio de estado 'eliminado' de la entidad {}", entity);
+    }
+
 }

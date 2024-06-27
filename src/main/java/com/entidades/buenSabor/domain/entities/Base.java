@@ -27,5 +27,9 @@ public abstract class Base implements Serializable {
     public Boolean isEliminado(){
         return eliminado;
     }
+
+    public Boolean getEliminado() {
+        return eliminado;
+    }
 }
 

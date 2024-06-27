@@ -59,4 +59,9 @@ public abstract class BaseFacadeImp <E extends Base,D extends BaseDto, DC, DE,ID
         return baseMapper.toDTO(entityUpdatedByService);
     }
 
+    public void changeEliminado(ID id) {
+        baseService.changeEliminado(id);
+    }
+
+
 }

@@ -15,8 +15,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Service
@@ -59,6 +58,17 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
     }
     private static final Logger logger = Logger.getLogger(PedidoServiceImp.class.getName());
 
+
+    private static final Map<Estado, Set<Estado>> validTransitions = new EnumMap<>(Estado.class);
+
+    static {
+        validTransitions.put(Estado.PENDIENTE, EnumSet.of(Estado.PREPARACION, Estado.RECHAZADO));
+        validTransitions.put(Estado.PREPARACION, EnumSet.of(Estado.FACTURADO, Estado.RECHAZADO));
+        validTransitions.put(Estado.FACTURADO, EnumSet.of(Estado.DELIVERY, Estado.RECHAZADO));
+        validTransitions.put(Estado.DELIVERY, EnumSet.of(Estado.ENTREGADO));
+        validTransitions.put(Estado.ENTREGADO, EnumSet.noneOf(Estado.class));
+        validTransitions.put(Estado.RECHAZADO, EnumSet.noneOf(Estado.class));
+    }
     @Override
     public void disminucionStock(Set<DetallePedido> detalles) throws RuntimeException {
         for (DetallePedido detalle : detalles) {
@@ -172,7 +182,7 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
         return create(pedido);
     } */
 
-    /* @Override
+    @Override
     public Pedido cambiaEstado(Estado estado, Long id) {
         Pedido pedido = getById(id);
         pedido.setEstado(estado);
@@ -210,8 +220,8 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
         }
 
         return pedidoRepository.save(pedido);
-    } */
-    @Override
+    }
+   /* @Override
     public Pedido cambiaEstado(Estado estado, Long id) {
         Pedido pedido = getById(id);
         pedido.setEstado(estado);
@@ -270,8 +280,7 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
         System.out.println("PEDIDO ACTUALIZADO: " + pedido);
 
         return pedidoRepository.save(pedido);
-    }
-
+    } */
 
     private void calcularTotal(Pedido pedido) {
         double total = 0.0;

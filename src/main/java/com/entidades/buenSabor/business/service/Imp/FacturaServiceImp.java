@@ -6,6 +6,7 @@ import com.entidades.buenSabor.business.service.FacturaService;
 import com.entidades.buenSabor.domain.entities.DetallePedido;
 import com.entidades.buenSabor.domain.entities.Factura;
 import com.entidades.buenSabor.domain.entities.Pedido;
+import com.entidades.buenSabor.domain.enums.TipoEnvio;
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -152,6 +153,15 @@ public class FacturaServiceImp extends BaseServiceImp<Factura,Long> implements F
                 .moveText(35, 640) // Ajusta las coordenadas según sea necesario
                 .showText("Email: " + pedido.getCliente().getEmail())
                 .endText();
+
+        // Mostrar descuento del 10% si el tipo de envío es TAKE_AWAY
+        if (pedido.getTipoEnvio() == TipoEnvio.TAKE_AWAY) {
+            canvas.beginText()
+                    .setFontAndSize(font, 9)
+                    .moveText(430, 180) // Ajusta las coordenadas según sea necesario
+                    .showText("Descuento aplicado del 10%")
+                    .endText();
+        }
 
         // Detalles de los artículos
         int y = 500; // Posición inicial en Y para los detalles, ajustar según la plantilla

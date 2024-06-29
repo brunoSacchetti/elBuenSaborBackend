@@ -190,7 +190,7 @@ public class PedidoServiceImp extends BaseServiceImp<Pedido,Long> implements Ped
         if (estado == Estado.PREPARACION) {
             Factura factura = new Factura();
             factura.setFechaFacturacion(LocalDate.now());
-            if (aplicarDescuento(pedido)){
+            if (pedido.getTipoEnvio() == TipoEnvio.TAKE_AWAY){
                 factura.setMontoDescuento(10);
             }else {
                 factura.setMontoDescuento(0);

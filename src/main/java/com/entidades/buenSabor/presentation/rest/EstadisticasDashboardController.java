@@ -121,4 +121,19 @@ public class EstadisticasDashboardController {
                 .body(excelContent);
     }
 
+    @GetMapping("/excel/pedidos")
+    public ResponseEntity<?> excelPedidos (
+            @RequestParam("fechaDesde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDesde,
+            @RequestParam("fechaHasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaHasta) throws IOException {
+        byte[] excelContent = estadisticas.generarExcelPedidos(fechaDesde, fechaHasta);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.set(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=pedidos.xls");
+        headers.setContentLength(excelContent.length);
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(excelContent);
+    }
+
 }

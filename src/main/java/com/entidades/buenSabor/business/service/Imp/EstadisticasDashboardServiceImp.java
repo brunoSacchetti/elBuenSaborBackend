@@ -51,6 +51,11 @@ public class EstadisticasDashboardServiceImp implements EstadisticasDashboardSer
         return pedidoRepository.findCantidadPedidosPorCliente(fechaDesde,fechaHasta);
     }
 
+    @Override
+    public List<ReportePedidosDto> findPedidosPorFecha(Date fechaDesde, Date fechaHasta){
+        return pedidoRepository.findPedidosPorFecha(fechaDesde, fechaHasta);
+    }
+
     public FechasLimites getFechasLimites(){
         return pedidoRepository.getFechasLimites();
     }
@@ -325,6 +330,57 @@ public class EstadisticasDashboardServiceImp implements EstadisticasDashboardSer
         // Autosize columns
         for (int i = 0; i < headersGanancia.length; i++) {
             sheet5.autoSizeColumn(i);
+        }
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        workbook.write(baos);
+        workbook.close();
+
+        return baos.toByteArray();
+    }
+
+    @Override
+    public byte[] generarExcelPedidos(Date fechaDesde, Date fechaHasta) throws IOException {
+        Workbook workbook = new HSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Pedidos Realizados");
+
+        // Crear encabezado
+        Row headerRow = sheet.createRow(0);
+        String[] headers = {"Numero de Pedido", "Fecha Pedido","Cantidad", "Articulo","Subtotal","Tipo de Envio", "Forma de Pago", "Estado", "Email Cliente" };
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+        }
+
+        CellStyle dateCellStyle = workbook.createCellStyle();
+        CreationHelper createHelper = workbook.getCreationHelper();
+        dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("yyyy-MM-dd"));
+
+        List<ReportePedidosDto> reportePedidos = findPedidosPorFecha(fechaDesde, fechaHasta);
+
+        int rowNum = 1;
+        for (ReportePedidosDto p : reportePedidos) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(p.getNroPedido());
+
+            // Formatear fecha
+            Cell fechaPedidoCell = row.createCell(1);
+            fechaPedidoCell.setCellValue(p.getFechaPedido());
+            fechaPedidoCell.setCellStyle(dateCellStyle);
+
+            row.createCell(2).setCellValue(p.getCantidad());
+            row.createCell(3).setCellValue(p.getDenominacion());
+            row.createCell(4).setCellValue(p.getSubtotal());
+            row.createCell(5).setCellValue(p.getTipoEnvio().toString());
+            row.createCell(6).setCellValue(p.getFormaPago().toString());
+            row.createCell(7).setCellValue(p.getEstado().toString());
+            row.createCell(8).setCellValue(p.getEmailCliente());
+        }
+
+
+        // Autosize columns
+        for (int i = 0; i < headers.length; i++) {
+            sheet.autoSizeColumn(i);
         }
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

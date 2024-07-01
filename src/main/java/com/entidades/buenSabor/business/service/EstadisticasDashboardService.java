@@ -16,6 +16,8 @@ public interface EstadisticasDashboardService {
     MontoGananciaDto findCostosGananciasByFecha(Date fechaDesde, Date fechaHasta);
     List<CantidadPedidosClienteDto> findCantidadPedidosPorCliente(Date fechaDesde, Date fechaHasta);
 
+    List<ReportePedidosDto> findPedidosPorFecha(Date fechaDesde, Date fechaHasta);
+
     //Obtener fechas limites de los productos
     FechasLimites getFechasLimites();
 
@@ -27,5 +29,7 @@ public interface EstadisticasDashboardService {
     byte[] generarExcelClientes(Date fechaDesde, Date fechaHasta) throws IOException;
 
     byte[] generarExcelResultadoEconomico(Date fechaDesde, Date fechaHasta) throws IOException;
+
+    byte[] generarExcelPedidos(Date fechaDesde, Date fechaHasta) throws IOException;
 
 }

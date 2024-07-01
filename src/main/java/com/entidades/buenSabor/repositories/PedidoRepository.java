@@ -1,9 +1,6 @@
 package com.entidades.buenSabor.repositories;
 
-import com.entidades.buenSabor.domain.dto.Estadisticas.CantidadPedidosClienteDto;
-import com.entidades.buenSabor.domain.dto.Estadisticas.FechasLimites;
-import com.entidades.buenSabor.domain.dto.Estadisticas.IngresosDiariosMensualesDto;
-import com.entidades.buenSabor.domain.dto.Estadisticas.MontoGananciaDto;
+import com.entidades.buenSabor.domain.dto.Estadisticas.*;
 import com.entidades.buenSabor.domain.dto.EstadisticasDashboard.CostoGanancia;
 import com.entidades.buenSabor.domain.dto.EstadisticasDashboard.IngresosDiarios;
 import com.entidades.buenSabor.domain.dto.EstadisticasDashboard.IngresosMensuales;
@@ -53,6 +50,25 @@ public interface PedidoRepository extends BaseRepository<Pedido,Long>{
             "function('DATE', MIN(p.fechaPedido)), function('DATE', MAX(p.fechaPedido))) " +
             "FROM Pedido p")
     FechasLimites getFechasLimites();
+
+
+    @Query("SELECT NEW com.entidades.buenSabor.domain.dto.Estadisticas.ReportePedidosDto(" +
+            "p.id AS nroPedido, " +
+            "FUNCTION('DATE', p.fechaPedido) AS fechaPedido, " +
+            "dp.cantidad AS cantidad, " +
+            "a.denominacion, " +
+            "dp.subTotal AS subtotal, " +
+            "p.tipoEnvio AS tipoEnvio, " +
+            "p.formaPago AS formaPago, " +
+            "p.estado AS estado, " +
+            "c.email AS emailCliente) " +
+            "FROM Pedido p " +
+            "JOIN p.detallePedidos dp " +
+            "JOIN dp.articulo a " +
+            "JOIN p.cliente c " +
+            "WHERE p.fechaPedido BETWEEN FUNCTION('DATE', :fechaDesde) AND FUNCTION('DATE', :fechaHasta) " +
+            "ORDER BY p.id ASC")
+    List<ReportePedidosDto> findPedidosPorFecha(Date fechaDesde, Date fechaHasta);
 
     List<Pedido> findByClienteId(Long clienteId);
 }
